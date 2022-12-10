@@ -22,6 +22,5 @@ def getNotas(browser):
     df.drop(["Media", "Faltas", "Código", "Situação"], axis=1, inplace=True)
     df2 = df.replace(np.nan, '', regex=True)
     dfi.export(df2, "{}".format(caminho.parent / "files" / "notas.png"))
-    print(df.to_string())
     browser.close()
     return (df2.to_string())

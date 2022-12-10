@@ -8,16 +8,13 @@ caminho = caminho_salvapdf.parent
 
 class Sessao:
     def login(user, senha, pedido):
-        options = webdriver.ChromeOptions()
-        options.add_argument("--headless")
         chromeOptions = webdriver.ChromeOptions()
         prefs = {"profile.default_content_settings.popups": 0,
                  "download.default_directory": r"{}".format(caminho.parent / "files"), # IMPORTANT - ENDING SLASH V IMPORTANT
                  "directory_upgrade": True}
+        chromeOptions.add_argument("--headless")
         chromeOptions.add_experimental_option("prefs", prefs)
         browser = webdriver.Chrome( chrome_options=chromeOptions)
-
-        #browser = webdriver.Chrome(chrome_options=options)
         browser.get('https://sis.sig.uema.br/sigaa/verTelaLogin.do')
         username = browser.find_element("name", "user.login")
         password = browser.find_element("name", "user.senha")

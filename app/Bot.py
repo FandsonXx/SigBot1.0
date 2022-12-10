@@ -25,7 +25,7 @@ class TelegramBot:
         update_id = None
         while True:
             atualizacao = self.obter_mensagens(update_id)
-            print(update_id)
+
             mensagens = atualizacao['result']
             if mensagens:
                 for mensagem in mensagens:
@@ -86,7 +86,6 @@ class TelegramBot:
             if self.identificador == 4:
                 return 'Ops Senha invalida digite "ok" para tentar novamente '
             pdf = caminho.parent / "files" / "./historico_{}.pdf".format(ass)
-            print(pdf)
             self._send_local_file(pdf)
             self.login = None
             self.senha = None
@@ -96,7 +95,6 @@ class TelegramBot:
             return 'açao invalida digite o numero correto ou /menu'
 
     def responder(self, resposta, chat_id):
-        print(resposta)
         link_de_envio = f'{self.url_base}/sendMessage?chat_id={chat_id}&text={resposta}'
 
         requests.get(link_de_envio)
@@ -117,7 +115,7 @@ class TelegramBot:
             del params['document']
             r = requests.post(url=API_URL.format(method_name=method_name, chat_id=self.idchat), params=params,
                               files={'document': document})
-            print('Houve um erro ao enviar mensagem. Detalhe: {}'.format(r.text))
+
 
         else:
             r = requests.post(url=API_URL.format(method_name=method_name), params=params)
@@ -135,8 +133,7 @@ class TelegramBot:
         print(r)
         if r.status_code >= 400:
             print('Houve um erro ao enviar mensagem. Detalhe: {}'.format(r.text))
-        else:
-            print('Mensagem enviada com sucesso.')
+
 
     def validarLogin(self,ass):
         if ass == 1:
