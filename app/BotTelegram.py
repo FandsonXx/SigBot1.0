@@ -27,14 +27,11 @@ class TelegramBot:
             atualizacao = self.obter_mensagens(update_id)
 
             mensagens = atualizacao['result']
-            print(mensagens)
             if mensagens:
                 for mensagem in mensagens:
                     if "message" in mensagem:
                         update_id = mensagem['update_id']
-                        print(update_id)
                         chat_id = mensagem['message']['from']['id']
-                        self.idchat = chat_id
                         primeiramensagem = mensagem['message']['from']['id']
                         resposta = self.criar_resposta(mensagem, primeiramensagem)
                         self.responder(resposta, chat_id)
