@@ -1,5 +1,5 @@
 import requests
-import json5
+import json
 import IniciarSessao
 from pathlib import Path
 import RemoverArquivos
@@ -7,7 +7,7 @@ import RemoverArquivos
 caminho_salvapdf = Path(__file__)
 caminho = caminho_salvapdf.parent
 
-TELEGRAM_TOKEN = '5639397237:AAHOaMa2mEJ79X76NbxxWol-9NqrT_4E0vs'
+TELEGRAM_TOKEN = '5639397237:AAHNbwQbvI5-ODj3EZ_zRRI5yGM-Q0_zckY'
 API_URL = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}' + '/{method_name}' + '?chat_id={chat_id}'
 
 
@@ -15,7 +15,7 @@ API_URL = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}' + '/{method_name}' + '
 class TelegramBot:
     def __init__(self):
         self.login = None
-        self.token = '5639397237:AAHOaMa2mEJ79X76NbxxWol-9NqrT_4E0vs'
+        self.token = '5639397237:AAHNbwQbvI5-ODj3EZ_zRRI5yGM-Q0_zckY'
         self.url_base = f'https://api.telegram.org/bot{self.token}'
         self.senha = None
         self.identificador = None
@@ -27,21 +27,24 @@ class TelegramBot:
             atualizacao = self.obter_mensagens(update_id)
 
             mensagens = atualizacao['result']
+            print(mensagens)
             if mensagens:
                 for mensagem in mensagens:
-                    update_id = mensagem['update_id']
-                    chat_id = mensagem['message']['from']['id']
-                    self.idchat = chat_id
-                    primeiramensagem = mensagem['message']['from']['id']
-                    resposta = self.criar_resposta(mensagem, primeiramensagem)
-                    self.responder(resposta, chat_id)
+                    if "message" in mensagem:
+                        update_id = mensagem['update_id']
+                        print(update_id)
+                        chat_id = mensagem['message']['from']['id']
+                        self.idchat = chat_id
+                        primeiramensagem = mensagem['message']['from']['id']
+                        resposta = self.criar_resposta(mensagem, primeiramensagem)
+                        self.responder(resposta, chat_id)
 
     def obter_mensagens(self, update_id):
         link_requisicao = f'{self.url_base}/getUpdates?timeout=100'
         if update_id:
             link_requisicao = f'{link_requisicao}&offset={update_id + 1}'
         resultado = requests.get(link_requisicao)
-        return json5.loads(resultado.content)
+        return json.loads(resultado.content)
 
     def criar_resposta(self, mensagem, primeiramensagem, ):
         mensagem = mensagem['message']['text']

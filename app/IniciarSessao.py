@@ -14,7 +14,7 @@ class Sessao:
                  "directory_upgrade": True}
         chromeOptions.add_argument("--headless")
         chromeOptions.add_experimental_option("prefs", prefs)
-        browser = webdriver.Chrome( chrome_options=chromeOptions)
+        browser = webdriver.Chrome( options=chromeOptions)
         browser.get('https://sis.sig.uema.br/sigaa/verTelaLogin.do')
         username = browser.find_element("name", "user.login")
         password = browser.find_element("name", "user.senha")
