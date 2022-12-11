@@ -68,7 +68,7 @@ class TelegramBot:
             self.senha = mensagem
             return f'''Digite ok para continuar '''
 
-        if self.identificador == 1:
+        if self.identificador == 1 and self.senha != None:
             self.enviar_imagem(caminho.parent / "img" / "wait.gif")
             ass = IniciarSessao.Sessao.login(self.login, self.senha, 1)
             self.identificador = self.validarLogin(ass)
@@ -79,7 +79,7 @@ class TelegramBot:
             self.senha = None
             self.identificador =None
             return f'''para retornar digite menu '''
-        if self.identificador == 2:
+        if self.identificador == 2 and self.senha != None:
             self.enviar_imagem(caminho.parent / "img" / "wait.gif")
             ass = IniciarSessao.Sessao.login(self.login, self.senha, 2)
             self.identificador = self.validarLogin(ass)
