@@ -1,5 +1,5 @@
 import requests
-import json
+import json5
 import IniciarSessao
 from pathlib import Path
 import RemoverArquivos
@@ -41,7 +41,7 @@ class TelegramBot:
         if update_id:
             link_requisicao = f'{link_requisicao}&offset={update_id + 1}'
         resultado = requests.get(link_requisicao)
-        return json.loads(resultado.content)
+        return json5.loads(resultado.content)
 
     def criar_resposta(self, mensagem, primeiramensagem, ):
         mensagem = mensagem['message']['text']
