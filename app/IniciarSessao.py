@@ -35,5 +35,3 @@ class Sessao:
             except:
                 return Avisos.Semaviso(pedido, browser)
 
-
-#Sessao.login('05195989389','Wather1234',2)
