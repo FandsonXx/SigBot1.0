@@ -1,6 +1,6 @@
 
-import BotTelegram
+import main
 
-bot = BotTelegram.TelegramBot
+bot = main.TelegramBot
 
 bot().Iniciar()
