@@ -7,7 +7,7 @@ from EnviarResposta import responder
 
 class TelegramBot:
 
-    def Iniciar(self):
+    def Iniciar(self): #inicia o bot
         update_id = None
         while True:
             atualizacao = obter_mensagens(update_id)

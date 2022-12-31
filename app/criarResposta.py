@@ -7,7 +7,7 @@ import key
 caminho_salvapdf = Path(__file__)
 caminho = caminho_salvapdf.parent
 
-def criar_resposta(mensagem, primeiramensagem, idchat):
+def criar_resposta(mensagem, primeiramensagem, idchat): # mensagem e opçoes que pareceram para o usuario do bot
 
     mensagem = mensagem['message']['text']
 
@@ -61,7 +61,7 @@ def criar_resposta(mensagem, primeiramensagem, idchat):
         return 'açao invalida digite o numero correto ou /menu'
 
 
-def validarLogin(ass,identificador):
+def validarLogin(ass,identificador): # funçao para identificar se o login no sistema foi feito
         if ass == 1:
             if identificador == 1:
                 return 3

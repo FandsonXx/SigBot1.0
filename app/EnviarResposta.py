@@ -1,7 +1,7 @@
 import requests
 from key import API_URL,TELEGRAM_TOKEN
 
-def enviarPdf(file_path,idchat):
+def enviarPdf(file_path,idchat): #funçao para enviar o arquivo pdf
     f = open(file_path, 'rb')
     file_bytes = f.read()
     f.close()
@@ -25,7 +25,7 @@ def send_response( method_name, params,idchat):
     return r.status_code == 200
 
 
-def enviarImagem( file_path, idchat):
+def enviarImagem( file_path, idchat): # para enviar imagens
     body = {
         'chat_id': idchat,
     }

@@ -1,5 +1,5 @@
 
-import main
+import Bot
 
 bot = main.TelegramBot
 

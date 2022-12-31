@@ -7,7 +7,7 @@ from pathlib import Path
 caminho_salvapdf = Path(__file__)
 caminho = caminho_salvapdf.parent
 
-def getNotas(browser):
+def getNotas(browser): # automaçao para extrair as notas dos alunos e alocar em uma tabela e converter em imagem
     browser.find_element("xpath",
                                    "/html/body/div[2]/div[2]/div[1]/div[1]/div/form/div/table/tbody/tr/td[1]/span[2]").click()
     browser.find_element("xpath",
