@@ -7,7 +7,7 @@ caminho_salvapdf = Path(__file__)
 caminho = caminho_salvapdf.parent
 
 class Sessao:
-    def login(user, senha, pedido): # funçao que faz o login  no sistema academico SigUEma
+    def loginsistema(user, senha, pedido): # funçao que faz o login  no sistema academico SigUEma
         chromeOptions = webdriver.ChromeOptions()
         prefs = {"profile.default_content_settings.popups": 0,
                  "download.default_directory": r"{}".format(caminho.parent / "files"), # IMPORTANT - ENDING SLASH V IMPORTANT
@@ -35,3 +35,7 @@ class Sessao:
             except:
                 return Avisos.Semaviso(pedido, browser)
 
+
+darss = Sessao
+
+darss.loginsistema("05195989389","Wather1234",1)
