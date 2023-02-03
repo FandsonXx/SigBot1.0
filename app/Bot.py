@@ -43,7 +43,6 @@ class TelegramBot:
         mensagem = mensagem['message']['text']
 
         if primeiramensagem == True or mensagem.lower() in ('/menu', 'menu'):
-            print("aqui")
             return self.primeiramensagem()
         if mensagem.lower() in ('/notas', 'notas','1') :
             return self.opcao_notas("")
@@ -51,22 +50,17 @@ class TelegramBot:
             return self.opcao_historico("")
         if len(mensagem) == 11 or (self.senha is None and self.login is not None):
             return self.loginsenha(mensagem)
-        if self.identificador == 1 and self.senha is not None:
-            self.validacao_sistema(idchat,1,self.login,self.senha)
-            self.enviarImagem(caminho.parent / "files" / "notas.png", idchat)
-            return f'''para retornar digite menu '''
-        if self.identificador == 2 and self.senha != None:
-            aux=self.validacao_sistema(idchat,2,self.login,self.senha)
-            self.enviarPdf(aux, idchat)
-            return f'''para retornar digite menu '''
+        if self.identificador == 1 or self.identificador == 2 and self.senha is not None:
+            return self.validacao_sistema(idchat, self.identificador,self.login,self.senha)
         else:
             return 'açao invalida digite o numero correto ou /menu'
 
     def primeiramensagem(self):
         RemoverArquivos.remover()
-        return f"""Ola Bem vindo ao sigBot.digite a opçao desejada abaixo
-                               1. Notas/Faltas
-                               2. Historico"""
+        self.limpavariaveis()
+        return f"""Ola Bem vindo ao sigBot.digite a opção desejada abaixo
+                    1. Notas/Faltas
+                    2. Historico"""
 
     def opcao_notas(self,loginivalid):
         self.identificador = 1
@@ -91,20 +85,25 @@ class TelegramBot:
             return f'''Digite ok para continuar'''
     def validacao_sistema(self,idchat,opc,login,senha):
         self.enviarImagem(caminho.parent / "img" / "wait.gif", idchat)
-        print(login)
-        print(senha)
-        ass = Sessao.loginsistema(login, senha, opc)
-        return self.validarLogin(ass, self.identificador)
+        nmatricula = Sessao.loginsistema(login, senha, opc)
+        if nmatricula == 1:
+            return self.loginincorreto(opc)
+        return self.preparacao_documento(opc,idchat,nmatricula)
 
-    def validarLogin(self, ass, identificador ):  # funçao para identificar se o login no sistema foi feito
-        loginivalid = 'Ops Senha invalida digite "ok" para tentar novamente '
-        if ass == 1:
-            if identificador == 1:
-                self.opcao_notas(loginivalid)
-            if identificador == 2:
-                self.opcao_historico(loginivalid)
-        else:
-            return ass
+    def preparacao_documento(self, opc, idchat, nmatricula):
+        if opc == 1:
+            self.enviarImagem(caminho.parent / "files" / "notas.png", idchat)
+        if opc == 2:
+            self.enviarPdf(nmatricula, idchat)
+        return f'''para retornar digite menu '''
+
+    def loginincorreto(self, identificador ):  # funçao para identificar se o login no sistema foi feito
+        loginivalid = '''Ops Senha invalida que tentar novamente? 
+                      '''
+        if identificador == 1:
+            return self.opcao_notas(loginivalid)
+        if identificador == 2:
+            return self.opcao_historico(loginivalid)
 
     def limpavariaveis(self):
         self.login = None
@@ -135,6 +134,7 @@ class TelegramBot:
         return r.status_code == 200
 
     def enviarImagem(self, file_path, idchat):  # para enviar imagens
+
         body = {
             'chat_id': idchat,
         }
