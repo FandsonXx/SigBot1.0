@@ -9,14 +9,22 @@ caminho_salvapdf = Path(__file__)
 caminho = caminho_salvapdf.parent
 
 
+
+#Esse código é uma implementação de um bot do Telegram que
+#fornece informações sobre notas e histórico escolar aos usuários.
+#O bot usa a biblioteca requests para fazer requisições HTTP à API
+#do Telegram e obter as mensagens dos usuários. O bot armazena o
+#estado de cada conversa (login, senha e opção escolhida pelo usuário)
+#em variáveis de instância e o mantém durante toda a conversa.
+
 class TelegramBot:
 
-    def __init__(self, ):
+    def __init__(self):
         self.senha = None
         self.login = None
         self.opcao = None
 
-    def Iniciar(self):  # inicia o bot
+    def Iniciar(self):  # O método Iniciar é a rotina principal do bot e é responsável por atualizar e obter novas mensagens dos usuários, criar uma resposta adequada e enviá-la de volta ao usuário
         update_id = None
         while True:
             atualizacao = self.obter_mensagens(update_id)
