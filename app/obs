@@ -1,0 +1,64 @@
+
+class TelegramBot:
+    def __init__(self):
+        self.password = None
+        self.username = None
+        self.mode = None
+
+    def start(self):
+        update_id = None
+        while True:
+            updates = self.get_updates(update_id)
+            if "result" in updates:
+                messages = updates['result']
+                if messages:
+                    for message in messages:
+                        if "message" in message:
+                            update_id = message['update_id']
+                            chat_id = message['message']['from']['id']
+                            response = self.create_response(message, chat_id)
+                            self.send_response(response, chat_id)
+
+    def get_updates(self, update_id):
+        request_url = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/getUpdates?timeout=100'
+        if update_id:
+            request_url = f'{request_url}&offset={update_id + 1}'
+        result = requests.get(request_url)
+        return json.loads(result.content)
+
+    def create_response(self, message, chat_id):
+        message_text = message['message']['text']
+
+        if message_text in ('/menu', 'menu'):
+            return self.menu_message()
+        if message_text in ('/notes', 'notes', '1'):
+            return self.notes_option()
+        if message_text in ('history', '/history', '/historico', 'historico', '2'):
+            return self.history_option()
+        if len(message_text) == 11 or (self.password is None and self.username is not None):
+            return self.username_password(message_text)
+        if self.mode in (1, 2) and self.password is not None:
+            return self.system_validation(chat_id, self.mode, self.username, self.password)
+        else:
+            return 'Invalid action, please enter the correct number or /menu'
+
+    def menu_message(self):
+        self.remove_files()
+        self.clear_variables()
+        return "Welcome to sigBot. Please enter your desired option below:\n1. Notes/Absences\n2. History"
+
+    def notes_option(self):
+        self.mode = 1
+        return "Please enter your username\n*Your data will not be saved in the system*"
+
+    def history_option(self):
+        self.mode = 2
+        return "Please enter your username\n*Your data will not be saved in the system*"
+
+    def username_password(self, message_text):
+        if self.username is None or len(message_text) == 11:
+            self.username = message_text
+            return "Please enter your password\nIf you made a mistake, please enter your username again"
+        if self.username is not None:
+            self.password = message_text
+            return "Please enter 'ok' to continue"
